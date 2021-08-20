@@ -8,16 +8,14 @@ class Solution:
             else:
                 d[nums[i]] = 1
         
-        priority_q = []
-        
-        for num, count in d.items():
-            priority_q.append((-count, num))
-            
-        heapq.heapify(priority_q)
-        
         res = []
-        while k > 0:
-            res.append(heapq.heappop(priority_q)[1])
-            k-=1
+        for num, count in d.items():
+            res.append([count, num])
             
-        return res
+        res.sort(key=lambda x: x[0], reverse=True)
+        
+        ans = []
+        for i in range(k):
+            ans.append(res[i][1])
+        
+        return ans
