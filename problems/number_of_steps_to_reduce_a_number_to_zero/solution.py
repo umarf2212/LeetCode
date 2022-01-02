@@ -1,14 +1,14 @@
 class Solution:
     def numberOfSteps(self, num: int) -> int:
         
-        c = 0
+        steps = 0
+        
         while num > 0:
-            res = divmod(num, 2)
-            if res[1] == 1:
-                num -= 1
-            else:
+            if num % 2 == 0:
                 num //= 2
-                num = res[0]
-            c+=1
-                
-        return c
+            else:
+                num -= 1
+            
+            steps += 1
+        
+        return steps
