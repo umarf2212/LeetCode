@@ -4,17 +4,17 @@ class Solution:
         stack = []
         
         opening = '([{'
-        closing = {')': '(', ']': '[', '}': '{'}
+        pairs = {']':'[', '}':'{', ')':'('}
         
-        for b in s:
+        for i in s:
             
-            if b in opening:
-                stack.append(b)
-            
-            elif len(stack)==0 or stack[-1] != closing[b]:
+            if i in opening:
+                stack.append(i)
+                
+            elif not stack or stack[-1] != pairs[i]:
                 return False
             
-            elif stack[-1] == closing[b]:
+            elif stack and stack[-1] == pairs[i]:
                 stack.pop()
-            
+        
         return len(stack) == 0
