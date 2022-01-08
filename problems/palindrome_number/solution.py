@@ -3,13 +3,12 @@ class Solution:
         
         if x < 0: return False
         
-        stack = []
-        X = str(x)
+        x = str(x)
         i = 0
-        j = len(X)-1
+        j = len(x)-1
         
-        while j > i and i != j:
-            if X[i] != X[j]:
+        while i <= j:
+            if x[i] != x[j]:
                 return False
             
             i+=1
