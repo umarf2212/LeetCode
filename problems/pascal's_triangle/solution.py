@@ -1,21 +1,19 @@
 class Solution:
     def generate(self, numRows: int) -> List[List[int]]:
         
-        if numRows == 0: return []
-        elif numRows == 1: return [[1]]
-        elif numRows == 2: return [[1], [1,1]]
+        if numRows == 1: return [[1]]
         
-        ar = [1,1]
-        row = 2 #starting number of rows
-        L = [[1], [1,1]]
+        triangle = [[1], [1,1]]
         
-        while row < numRows:
-            temp = []
-            for i in range(len(ar) - 1):
-                temp.append(ar[i]+ar[i+1])
+        for _ in range(numRows-2):
             
-            ar = [1] + temp + [1]
-            L.append(ar)
-            row += 1
+            currRow = [1]
+            
+            for i in range(1, len(triangle[-1])):
+                currRow.append(triangle[-1][i]+triangle[-1][i-1])
+            
+            currRow.append(1)
+            
+            triangle.append(currRow)
         
-        return L
+        return triangle
