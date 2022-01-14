@@ -5,18 +5,24 @@
 #         self.left = left
 #         self.right = right
 class Solution:
-    
-    def traverse(self, root, ar):
-        if not root: return
-        
-        self.traverse(root.left, ar)
-        ar.append(root.val)
-        self.traverse(root.right, ar)
-
-            
     def kthSmallest(self, root: TreeNode, k: int) -> int:
         
-        ar = []
-        self.traverse(root, ar)
         
-        return ar[k-1]
+        def traverse(root, n, k, res):
+            if not root: return
+            
+            traverse(root.left, n, k, res)       
+            
+            n[0] +=1
+            if n[0] == k:
+                res[0] = root.val
+            
+            traverse(root.right, n, k, res)            
+
+
+        
+        n = [0]
+        res = [0]
+        traverse(root, n, k, res)
+        
+        return res[0]
