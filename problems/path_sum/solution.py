@@ -5,20 +5,17 @@
 #         self.left = left
 #         self.right = right
 class Solution:
-    
-    def traverse(self, root, targetSum):
-        if not root: return
+    def hasPathSum(self, root: Optional[TreeNode], targetSum: int) -> bool:
         
-        #leaf
-        if (not root.left and not root.right) and targetSum-root.val == 0:
-            return True
-    
-        left = self.traverse(root.left, targetSum-root.val)
-        right = self.traverse(root.right, targetSum-root.val)
+        def traverse(root, targetSum):
+            if not root: return False
+
+            if not root.left and not root.right and targetSum-root.val == 0:
+                return True
+            
+            left = traverse(root.left, targetSum-root.val)
+            right = traverse(root.right, targetSum-root.val)
+            
+            return left or right
         
-        return left or right
-    
-    def hasPathSum(self, root: TreeNode, targetSum: int) -> bool:
-        if not root: return False
-        
-        return self.traverse(root, targetSum)
+        return traverse(root, targetSum)
