@@ -16,8 +16,7 @@ class KthLargest:
             heapq.heappushpop(self.heap, val)
         
         return self.heap[0]
-
-
+        
 
 # Your KthLargest object will be instantiated and called as such:
 # obj = KthLargest(k, nums)
