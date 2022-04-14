@@ -5,16 +5,21 @@
 #         self.left = left
 #         self.right = right
 class Solution:
-    
-    def find(self, root, val):
-        if not root: return
+    def searchBST(self, root: Optional[TreeNode], val: int) -> Optional[TreeNode]:
         
-        if root.val == val:
-            return root
-        elif val > root.val:
-            return self.find(root.right, val)
-        else:
-            return self.find(root.left, val)
-    
-    def searchBST(self, root: TreeNode, val: int) -> TreeNode:
-        return self.find(root, val)
+        
+        def traverse(root, ans):
+            if not root: return None
+            
+            if root.val == val:
+                ans[0] = root
+            
+            if root.val > val:
+                traverse(root.left, ans)
+            else:
+                traverse(root.right, ans)
+        
+        ans = [None]
+        traverse(root, ans)
+        
+        return ans[0]
