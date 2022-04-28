@@ -1,8 +1,5 @@
 class Solution:
     def multiply(self, num1: str, num2: str) -> str:
-        
-        # 123 * 456
-        
         def multiply(digit):
             result = ''
             carry = '0'
@@ -17,11 +14,11 @@ class Solution:
                 result += str(carry)
                 
             return result[::-1]
-        
+            
+        # [738, 615, 492]
         result = 0
-        j = 0
         for i in range(len(num2)-1, -1, -1):
-            result += int(multiply(num2[i]) + ('0' * j))
-            j+=1
+            mul = int(multiply(num2[i]))
+            result += mul * 10**(len(num2)-1-i)
             
         return str(result)
