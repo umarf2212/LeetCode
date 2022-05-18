@@ -1,6 +1,5 @@
 class Solution:
     def merge(self, intervals: List[List[int]]) -> List[List[int]]:
-        
         intervals.sort(key=lambda x: x[0])
         
         res = []
@@ -9,7 +8,7 @@ class Solution:
             
             
             if intervals[i][1] >= intervals[i+1][0]:
-                start = min(intervals[i][0], intervals[i+1][0])
+                start = intervals[i][0]
                 
                 currEnd = intervals[i][1]
                 while i < len(intervals)-1 and currEnd >= intervals[i+1][0]:
