@@ -1,30 +1,23 @@
 class Solution:
     def strStr(self, haystack: str, needle: str) -> int:
+        if not needle: return 0
+        if len(haystack) < len(needle): return -1
         
-        if not needle and not haystack: return 0
-        if not needle and haystack: return 0
-        
-        """
-            h -> hlueluilo
-            n -> uil
-        """
-        
-        # for h in range(len(haystack)):
-#         h = 0
-#         n = 0
-#         while h < len(haystack):
-#             if haystack[h] == needle[n]:
-                
-#                 n+=1
-                
-#                 if n == len(needle):
+        j=0
+        i=0
+        while i < len(haystack):
             
-#                     return h - len(needle) + 1
-#             else:
-#                 h = h-n
-#                 n = 0
-            
-#             h += 1
+            temp = i
+            if needle[j] == haystack[i]:
+                while j < len(needle) and i<len(haystack) and needle[j] == haystack[i]:
+                    i+=1
+                    j+=1
                 
+                if j == len(needle):
+                    return temp
+            
+            j=0
+            i = temp    
+            i+=1
         
-        return haystack.find(needle)
+        return -1
