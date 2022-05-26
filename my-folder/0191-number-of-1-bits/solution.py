@@ -1,3 +1,12 @@
 class Solution:
     def hammingWeight(self, n: int) -> int:
-        return sum([int(i) for i in bin(n)[2:]])
+        
+        count = 0
+        for _ in range(32):
+            
+            if n & 1 == 1:
+                count += 1
+            
+            n >>= 1
+        
+        return count
