@@ -1,9 +1,11 @@
 class Solution:
     def missingNumber(self, nums: List[int]) -> int:
-        n = len(nums)
-        Sum = n*(n+1)//2
         
-        for i in nums:
-            Sum -= i
+        xor = 0
+        for num in range(len(nums)+1):
+            xor ^= num
         
-        return Sum
+        for num in nums:
+            xor ^= num
+        
+        return xor
