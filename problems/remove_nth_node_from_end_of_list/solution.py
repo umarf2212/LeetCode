@@ -4,40 +4,26 @@
 #         self.val = val
 #         self.next = next
 class Solution:
-    def removeNthFromEnd(self, head: ListNode, n: int) -> ListNode:
-        
-        # length of the list is L
-        # nth node from the end of list means -> (n-L+1)th node from first
-        
-        # 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> N
-        # 1 3, 2 4, 3 5, 4 6, 5 7
-        
-        # 1 -> 2
-        # n = 1 or 2
-        
-        first = head
-        second = head
-        
-        totalNodes = 1
+    def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
+
+        # 1 2 3 4 5 6 7 8
+
         temp = head
-        while temp.next:
-            
-            if totalNodes <= n:
-                first = first.next
-            
+        c = 1
+        while temp and c < n:
             temp = temp.next
-            totalNodes += 1
+            c += 1
         
-        
-        if totalNodes - n == 0:
+        if not temp.next:
             return head.next
-                
-        while first.next:
-            first = first.next
-            second = second.next
         
-        # second -> n-1 th node
-        second.next = second.next.next
+        last_nth = head
+        prev = head
+        while temp.next:
+            temp = temp.next
+            prev = last_nth
+            last_nth = last_nth.next
         
+        prev.next = prev.next.next
+
         return head
-        
