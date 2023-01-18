@@ -1,26 +1,33 @@
 class Solution:
     def threeSum(self, nums: List[int]) -> List[List[int]]:
-        
-        def twoSum(arr, target):
-            d = {}
-            pairs = set()
-            for i in range(len(arr)):
-                p = target - arr[i]
-                if p in d:
-                    pairs.add(tuple([p, arr[i]]))
-                else:
-                    d[arr[i]] = i
-            
-            return pairs
-        
-        d = {}
-        res = set()
+
+        nums.sort()
+        triplets = set()
         for i in range(len(nums)):
-            
-            if nums[i] not in d:
-                d[nums[i]] = i
-                pairs = twoSum(nums[i+1:], -nums[i])
-                for pair in pairs:
-                    res.add(tuple(sorted([nums[i], pair[0], pair[1]])))
+            if i > 0 and nums[i] == nums[i-1]:
+                continue
+
+            j = i+1
+            k = len(nums)-1
+            while j < k:
+
+
+                Sum = nums[i] + nums[j] + nums[k]
+                if Sum == 0:
+                    triplets.add((nums[i], nums[j], nums[k]))
+                    
+                    while j < k and nums[j] == nums[j+1]:
+                        j += 1
+                    
+                    while j < k and nums[k] == nums[k-1]:
+                        k -= 1
+                    
+                    j+=1
+                    k-=1
+                
+                elif Sum > 0:
+                    k -= 1
+                else:
+                    j += 1
         
-        return res
+        return triplets
