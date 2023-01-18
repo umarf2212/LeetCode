@@ -4,22 +4,20 @@
 #         self.val = val
 #         self.next = next
 class Solution:
-    
-    def merge(self, l1, l2):
-        if not l1: return l2
-        elif not l2: return l1
-        
-        # 1->2->3
-        # 5->6->7
-        
-        smaller = l1 if l1.val <= l2.val else l2
-        larger = l1 if l1.val > l2.val else l2
-        
-        smaller.next = self.merge(smaller.next, larger)        
-        
-        return smaller
+    def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
 
+        def merge(list1, list2):
+            if not list1: return list2
+            if not list2: return list1
+
+            if list1.val < list2.val:
+                small = list1
+                big = list2
+            else:
+                small = list2
+                big = list1
+            
+            small.next = merge(small.next, big)
+            return small
         
-    
-    def mergeTwoLists(self, l1: ListNode, l2: ListNode) -> ListNode:
-        return self.merge(l1, l2)
+        return merge(list1, list2)
