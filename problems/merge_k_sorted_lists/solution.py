@@ -4,33 +4,32 @@
 #         self.val = val
 #         self.next = next
 class Solution:
-    
-    # [[], [], [], [], [], []]
-    
-    def merge(self, l1, l2):
-        if not l1: return l2
-        elif not l2: return l1
+    def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
+
+
+        def merge(list1, list2):
+            if not list1: return list2
+            if not list2: return list1
+
+            if list1.val < list2.val:
+                small = list1
+                big = list2
+            else:
+                small = list2
+                big = list1
+            
+            small.next = merge(small.next, big)
+            return small
         
-        smaller = l1 if l1.val <= l2.val else l2
-        larger = l1 if l1.val > l2.val else l2
+        def divide(lists):
+            if not lists: return None
+            if len(lists) == 1: return lists[0]
+
+            mid = len(lists)//2
+
+            list1 = divide(lists[:mid])
+            list2 = divide(lists[mid:])
+
+            return merge(list1, list2)
         
-        smaller.next = self.merge(smaller.next, larger)
-        return smaller
-    
-    def divide(self, lists):
-        
-        if len(lists) == 0:
-            return None
-        elif len(lists) == 1:
-            return lists[0]
-        
-        
-        mid = len(lists)//2
-        list1 = self.divide(lists[:mid])
-        list2 = self.divide(lists[mid:])
-        
-        return self.merge(list1, list2)
-        
-    
-    def mergeKLists(self, lists: List[ListNode]) -> ListNode:
-        return self.divide(lists)
+        return divide(lists)
