@@ -4,27 +4,34 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
+from collections import deque
 class Solution:
-    
-    def traverse(self, q, res, level):
-        if len(q) == 0: return
-        
-        result = []
-        while q and q[0][1] == level:
-            temp = q.popleft()
-            
-            result.append(temp[0].val)
-            
-            if temp[0].left: q.append([temp[0].left, level+1])
-            if temp[0].right: q.append([temp[0].right, level+1])
-        
-        res.append(result)
-        self.traverse(q, res, level+1)
-    
-    def levelOrder(self, root: TreeNode) -> List[List[int]]:
+    def levelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
         if not root: return []
-        
+
         q = deque([[root, 0]])
-        res = []
-        self.traverse(q, res, 0)
-        return res
+        ans = []
+        temp = []
+        curLevel = 0
+        while q:
+            cur = q.popleft()
+            root = cur[0]
+            level = cur[1]
+
+            if level != curLevel:
+                ans.append(temp)
+                temp = []
+                curLevel = level
+
+            temp.append(root.val)
+
+            if root.left:
+                q.append([root.left, level+1])
+            
+            if root.right:
+                q.append([root.right, level+1])
+        
+        if temp:
+            ans.append(temp)
+        
+        return ans
