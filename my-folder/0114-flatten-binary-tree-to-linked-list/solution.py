@@ -5,37 +5,45 @@
 #         self.left = left
 #         self.right = right
 class Solution:
-    
-    def makeList(self, root, ar):
-        if not root: return
-        
-        ar.append(root.val)
-        self.makeList(root.left, ar)
-        self.makeList(root.right, ar)
-        
-    
-        def buildLinkedList(self, root, ar):
-            if not ar: return None
-            
-            new = TreeNode(root.val)
-            new.right = self.buildLinkedList(root.right, ar[1:])
-            
-            return new
-    
-    def flatten(self, root: TreeNode) -> None:
+    def flatten(self, root: Optional[TreeNode]) -> None:
         """
         Do not return anything, modify root in-place instead.
         """
-        
-        ar = []
-        self.makeList(root, ar)
-        temp = root
-        if len(ar) > 0: temp.val = ar[0]
-        for i in range(1, len(ar)):
-            if temp.right:
-                temp.right.val = ar[i]
-            else:
-                temp.right = TreeNode(ar[i])
+
+        # This solution is strongly inspired by Morris inorder traversal
+        # This is a memory-time tradeoff.
+        # In-place means constant memory usage which is a big deal and 
+        # is compensated with by extra time.
+
+        def moveNodes(root):
+            if not root: return
+
+            if (not root.left and not root.right) or (not root.left and root.right):
+                return root
             
-            temp.left = None
-            temp = temp.right
+            if not root.right and root.left:
+                root.right = root.left
+                root.left = None
+            
+            if root.left and root.right:
+                temp = root.left
+                while temp.right:
+                    temp = temp.right
+                
+                temp.right = root.right
+                root.right = root.left
+                root.left = None
+            
+            return root
+        
+        def flatten(root):
+            if not root: return
+            if not root.left and not root.right:
+                return
+            
+            flatten(root.right)
+            flatten(root.left)
+            return moveNodes(root)
+        
+        return flatten(root)
+
