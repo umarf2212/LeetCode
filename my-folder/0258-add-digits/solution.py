@@ -1,9 +1,13 @@
 class Solution:
     def addDigits(self, num: int) -> int:
+        if num < 10: 
+            return num
         
-        num = str(num)
+        Sum = 0
+        while num > 0:
+            Sum += num % 10
+            num //= 10
         
-        while len(num) != 1:
-            num = str(sum([int(i) for i in num]))
-        
-        return int(num)
+        return self.addDigits(Sum)
+
+
