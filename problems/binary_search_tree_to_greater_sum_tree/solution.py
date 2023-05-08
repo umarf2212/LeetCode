@@ -5,33 +5,18 @@
 #         self.left = left
 #         self.right = right
 class Solution:
-    def bstToGst(self, root: TreeNode) -> TreeNode:
-        
-        def traverse(root,ar):
-            if not root: return
-            
-            traverse(root.left,ar)
-            ar.append(root.val)
-            traverse(root.right,ar)
-        
-        ar = []
-        traverse(root, ar)
-        
-        for i in range(len(ar)-2, -1,-1):
-            ar[i] = (ar[i+1]+ar[i])
+    curSum = 0
+    def traverse(self, root):
+        if not root: return 0
 
-        
-        def fillTree(root,i):
-            if not root: return
-            
-            fillTree(root.left,i)
-            
-            root.val = ar[i[0]]
-            i[0]+=1
-            
-            fillTree(root.right,i)
-        
-        i=[0]
-        fillTree(root,i)
-        
+        self.traverse(root.right)
+
+        self.curSum += root.val
+        root.val = self.curSum 
+
+        self.traverse(root.left)
+
+    def bstToGst(self, root: TreeNode) -> TreeNode:
+        self.traverse(root)
         return root
+
