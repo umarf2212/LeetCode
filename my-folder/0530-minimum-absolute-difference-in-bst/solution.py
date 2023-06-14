@@ -5,24 +5,20 @@
 #         self.left = left
 #         self.right = right
 class Solution:
-    
-    def inorder(self, root, ar):
-        if not root: return
-        
-        self.inorder(root.left, ar)
-        ar.append(root.val)
-        self.inorder(root.right, ar)
+    def getMinimumDifference(self, root: Optional[TreeNode]) -> int:
 
-    
-    def getMinimumDifference(self, root: TreeNode) -> int:
+        def traverse(root, ar):
+            if not root: return
+
+            traverse(root.left, ar)
+            ar.append(root.val)
+            traverse(root.right, ar)
+        
         ar = []
-        
-        self.inorder(root, ar)
-        
-        minDiff = float('inf')
-        for i in range(1, len(ar)):
-            d = abs(ar[i] - ar[i-1])
-            if d < minDiff:
-                minDiff = d
-        
-        return minDiff
+        traverse(root, ar)
+
+        diff = float('inf')
+        for i in range(len(ar)-1):
+            diff = min(diff, ar[i+1]-ar[i])
+
+        return diff
