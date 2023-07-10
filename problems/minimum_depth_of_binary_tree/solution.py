@@ -5,24 +5,19 @@
 #         self.left = left
 #         self.right = right
 class Solution:
-    
-    def traverse(self, root):
-        if not root: return 0
-        
-        left = self.traverse(root.left)
-        right = self.traverse(root.right)
-        
-        if left==0 or right==0:
+    def minDepth(self, root: Optional[TreeNode]) -> int:
+
+        def traverse(root):
+            if not root: 
+                return 0
+
+            left = traverse(root.left)
+            right = traverse(root.right)
+
+            if left > 0 and right > 0:
+                return 1 + min(left, right)
+                
             return 1 + max(left, right)
-        else:
-            return 1 + min(left, right)
+        
             
-        # if left > 0 and right > 0:
-        #     return 1 + min(left, right)
-        # else:
-        #     return 1 + max(left, right)
-        
-    
-    def minDepth(self, root: TreeNode) -> int:
-        
-        return self.traverse(root)
+        return traverse(root)
