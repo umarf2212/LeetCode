@@ -1,24 +1,25 @@
 class Solution:
     def trap(self, height: List[int]) -> int:
         
-        currMax = -1
+        # Nearest max to the Left and Nearst Max to the Right
+        # and get minimum of maxes on both sides for max water level 
+        # minus the height of the current building
+
+        curMax = -1
         left = []
         for i in range(len(height)):
-            currMax = max(currMax, height[i])
-            left.append(currMax)
+            curMax = max(height[i], curMax)
+            left.append(curMax)
         
-        currMax = -1
+        curMax = -1
         right = []
-        for i in range(len(height)-1, -1, -1):
-            currMax = max(currMax, height[i])
-            right.append(currMax)
-        
+        for i in range(len(height)-1,-1,-1):
+            curMax = max(height[i], curMax)
+            right.append(curMax)
         right = right[::-1]
-        
-        res = []
-        
+
+        res = 0
         for i in range(len(height)):
-            level = min(left[i], right[i]) - height[i]
-            res.append(level)
+            res += min(left[i], right[i]) - height[i]
         
-        return sum(res)
+        return res
