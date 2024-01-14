@@ -1,17 +1,13 @@
+from functools import cmp_to_key
 class Solution:
     def kClosest(self, points: List[List[int]], k: int) -> List[List[int]]:
 
-        pq = []
+        dist = lambda x, y: sqrt(x**2 + y**2)
         
-        for point in points:
-            x = point[0]
-            y = point[1]
-            d = sqrt(x**2 + y**2)
-            heapq.heappush(pq, (d, point))
-        
-        ar = []
-        while k > 0:
-            ar.append(heapq.heappop(pq)[1])
-            k-=1
-        
-        return ar
+        def compare(a, b):
+            return dist(a[0], a[1]) - dist(b[0], b[1])
+
+
+        return sorted(points, key=cmp_to_key(compare))[:k]
+
+
