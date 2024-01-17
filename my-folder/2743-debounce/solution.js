@@ -4,10 +4,10 @@
  * @return {Function}
  */
 var debounce = function(fn, t) {
-    let timer;
+    let timer
     return function(...args) {
-        clearTimeout(timer);
-        timer = setTimeout(function() {
+        if (timer) clearTimeout(timer);
+        timer = setTimeout(() => {
             fn.apply(this, args)
         }, t)
     }
