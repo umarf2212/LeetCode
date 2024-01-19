@@ -1,8 +1,9 @@
 /**
  * @param {number} millis
+ * @return {Promise}
  */
 async function sleep(millis) {
-    return new Promise(resolve => setTimeout(resolve, millis))
+    return new Promise(resolve => setTimeout(() => resolve(1), millis))
 }
 
 /** 
