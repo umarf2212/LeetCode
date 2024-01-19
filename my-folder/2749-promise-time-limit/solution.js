@@ -4,22 +4,22 @@
  * @return {Function}
  */
 var timeLimit = function(fn, t) {
-    /**
-        Promise.race is the highlight of this problem.
-    */
 
-    // This promise is solely for rejection after time limit
-    const timeout = new Promise((resolve, reject) => {
+    // If function completes withing time limit, resolve with result
+    // If time limit expires, 
+    // reject the function with string "time limit exceeded"
+
+    const timeoutPromise = new Promise((resolve, reject) => {
         setTimeout(() => {
             reject("Time Limit Exceeded")
         }, t)
     })
-
-    return function(...args) {
+    
+    return async function(...args) {
         return Promise.race([
-            new Promise(resolve => {resolve(fn(...args))}), 
-            timeout
-        ])
+            new Promise(resolve => resolve(fn(...args))),
+            timeoutPromise
+        ])        
     }
 };
 
