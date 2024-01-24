@@ -5,29 +5,22 @@
 #         self.left = left
 #         self.right = right
 class Solution:
-    
-    def match(self, root, sub):
-        
-        if not root and not sub:
-            return True
-        elif not root or not sub:
-            return False
-        elif root.val != sub.val:
-            return False
-        else:
-            return self.match(root.left, sub.left) and self.match(root.right, sub.right)
-        
-        
-    def matchNodes(self, root, sub):
-        if not root: return
-        
-        foundSubtree = False
-        if root.val == sub.val:
-            foundSubtree = self.match(root, sub)
-        
-        return self.matchNodes(root.left, sub) or self.matchNodes(root.right, sub) or foundSubtree
+    def isSubtree(self, root: Optional[TreeNode], subRoot: Optional[TreeNode]) -> bool:
+        # This is a simple Bruteforce approach to check of Two Trees match
 
-    
-    def isSubtree(self, root: TreeNode, subRoot: TreeNode) -> bool:
+        def checkMatch(p, q):
+            if not p and not q: return True
+            if not p or not q: return False
+            if p.val != q.val: return False
+            return checkMatch(p.left, q.left) and checkMatch(p.right, q.right)
         
-        return self.matchNodes(root, subRoot)
+        def traverse(root1, root2):
+            if not root1 and not root2: return
+            if not root1 or not root2: return
+
+            if checkMatch(root1, root2):
+                return True
+            
+            return traverse(root1.left, root2) or traverse(root1.right, root2)
+
+        return traverse(root, subRoot)
