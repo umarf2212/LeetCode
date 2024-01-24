@@ -3,7 +3,9 @@ class Solution:
         
         d = {}
         for i in range(len(nums)):
-            if target - nums[i] in d:
-                return [i, d[target - nums[i]]]
-            else:
-                d[nums[i]] = i
+            num = nums[i]
+
+            if target - num in d:
+                return [i, d[target-num]]
+            
+            d[num] = i
