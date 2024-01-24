@@ -5,24 +5,25 @@
 #         self.left = left
 #         self.right = right
 class Solution:
-    
-    def traverse(self, root, maxSoFar):
-        if not root: return 0
+    def maxPathSum(self, root: Optional[TreeNode]) -> int:
         
-        left = self.traverse(root.left, maxSoFar)
-        right = self.traverse(root.right, maxSoFar)
+        def traverse(root, maxSumPath):
+            if not root: return 0
+
+            left = traverse(root.left, maxSumPath)
+            right = traverse(root.right, maxSumPath)
+
+            leftRightSum = left + root.val + right
+            leftSum = left + root.val
+            rightSum = right + root.val
+
+            maxSumPath[0] = max(maxSumPath[0], leftRightSum, leftSum, rightSum, root.val)
+
+            return max(leftSum, rightSum, root.val)
         
-        curr_max = max(root.val, root.val+left, root.val+right)
+        maxSumPath = [root.val]
         
-        maxSoFar[0] = max(maxSoFar[0], curr_max, root.val+left+right)
-        
-        return curr_max
-    
-    def maxPathSum(self, root: TreeNode) -> int:
-        
-        maxSoFar = [float('-inf')]
-        
-        self.traverse(root, maxSoFar)
-        
-        return maxSoFar[0]
-        
+        traverse(root, maxSumPath)
+        return maxSumPath[0]
+
+
