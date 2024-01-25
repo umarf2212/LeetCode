@@ -3,33 +3,43 @@
 #     def __init__(self, val=0, next=None):
 #         self.val = val
 #         self.next = next
+import heapq
 class Solution:
     def mergeKLists(self, lists: List[Optional[ListNode]]) -> Optional[ListNode]:
 
+        if not lists: return None
 
-        def merge(list1, list2):
-            if not list1: return list2
-            if not list2: return list1
+        # [1,2 ,7, 2,21 ,6]
 
-            if list1.val < list2.val:
-                small = list1
-                big = list2
+        # 1 -> | 2 -> 4
+        #        3 -> 5 -> 6
+
+        def merge(l1, l2):
+            if not l1: return l2
+            if not l2: return l1
+
+            if l1.val < l2.val:
+                l1.next = merge(l1.next, l2)
+                return l1
             else:
-                small = list2
-                big = list1
-            
-            small.next = merge(small.next, big)
-            return small
+                l2.next = merge(l1, l2.next)
+                return l2
         
-        def divide(lists):
-            if not lists: return None
-            if len(lists) == 1: return lists[0]
+        pq = [(ll.val, i, id(ll), ll) for i, ll in enumerate(lists) if ll]
+        heapq.heapify(pq)
 
-            mid = len(lists)//2
-
-            list1 = divide(lists[:mid])
-            list2 = divide(lists[mid:])
-
-            return merge(list1, list2)
+        while len(pq) >= 2:
+            _, i, _, l1 = heapq.heappop(pq)
+            _, j, _, l2 = heapq.heappop(pq)
+            l3 = merge(l1, l2)
+            heapq.heappush(pq, (l3.val, i+j, id(l3), l3))
         
-        return divide(lists)
+        # print(pq)
+        # print(pq[0][2])
+        if not pq:
+            return None
+
+        return pq[0][3]
+
+        
+
