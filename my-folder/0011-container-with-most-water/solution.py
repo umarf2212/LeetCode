@@ -1,6 +1,11 @@
 class Solution:
     def maxArea(self, height: List[int]) -> int:
 
+        # Mainly a "Greedy" approach using Two Pointers
+        
+        # Area = l * b
+        # = (j-i) * min(height[i], height[j])
+
         i = 0
         j = len(height)-1
         ans = 0
@@ -14,3 +19,5 @@ class Solution:
                 j -= 1
         
         return ans
+
+
