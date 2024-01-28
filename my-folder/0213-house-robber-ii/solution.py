@@ -1,20 +1,27 @@
 class Solution:
     def rob(self, nums: List[int]) -> int:
+        
         if len(nums) == 1: return nums[0]
         if len(nums) == 2: return max(nums[0], nums[1])
-        
-        def findMaxMoney(nums):
-            n = len(nums)
-            dp = [0 for _ in range(n)]
-            dp[0] = nums[0]
-            dp[1] = max(nums[0], nums[1])
 
-            for i in range(2, n):
-                dp[i] = max( dp[i-1] , nums[i] + dp[i-2] )
+        def ml(i, dp, A):
+            if i < 0:
+                return 0
             
-            return dp[n-1]
+            if dp[i] != -1:
+                return dp[i]
+            
+            dp[i] = max(ml(i-1, dp, A), A[i] + ml(i-2, dp, A))
+
+            return dp[i]
+
+        def maxLoot(A):
+            n = len(A)
+            dp = [-1] * n
+            return ml(n-1, dp, A)
         
-        sol1 = findMaxMoney(nums[:len(nums)-1])
-        sol2 = findMaxMoney(nums[::-1][:len(nums)-1])
+        return max( maxLoot(nums[1:]), maxLoot(nums[:-1]) )
+            
+
         
-        return max(sol1, sol2)
+
