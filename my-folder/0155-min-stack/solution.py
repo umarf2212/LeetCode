@@ -1,19 +1,14 @@
 class MinStack:
 
     def __init__(self):
-        """
-        initialize your data structure here.
-        """
+        # item -> [val, min]
         self.stack = []
-        #stack[0] is the value and 
-        #stack[1] is the min value at this point
-        
 
     def push(self, val: int) -> None:
         if not self.stack:
             self.stack.append([val, val])
         else:
-            self.stack.append([val, min(val, self.getMin())])
+            self.stack.append( [val, min( self.stack[-1][1], val )] )
 
     def pop(self) -> None:
         self.stack.pop()
