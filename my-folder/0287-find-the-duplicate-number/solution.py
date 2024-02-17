@@ -7,4 +7,3 @@ class Solution:
                 nums[ind] = -nums[ind]
             else:
                 return abs(nums[i])
-
