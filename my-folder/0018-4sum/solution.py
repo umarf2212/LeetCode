@@ -16,7 +16,7 @@ class Solution:
                     Sum = nums[i]+nums[j]+nums[k]+nums[l]
 
                     if Sum == target:
-                        print(i,j,k,l)
+                        # print(i,j,k,l)
                         res.append([nums[i],nums[j],nums[k],nums[l]])
 
                         while k < l and nums[k] == nums[k+1]:
