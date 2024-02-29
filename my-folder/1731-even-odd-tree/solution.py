@@ -4,36 +4,43 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
+from collections import deque, defaultdict
 class Solution:
-    def isEvenOddTree(self, root: TreeNode) -> bool:
+    def isEvenOddTree(self, root: Optional[TreeNode]) -> bool:
         
-        
-        q = deque([[root, 0]])
-        
-        evenPrev = None
-        oddPrev = None
-        
+        q = deque([(root, 0)])
+
+        levels = defaultdict(list)
         while q:
-            temp = q.popleft()
-            curr = temp[0]
-            level = temp[1]
+            cur, level = q.popleft()
+
+            levels[level].append(cur.val)
+
+            if cur.left:
+                q.append((cur.left, level+1))
             
-            if level % 2 == 0:
-                
-                if oddPrev and oddPrev >= curr.val or curr.val % 2 == 0:
-                    return False
-                
-                evenPrev = None
-                oddPrev = curr.val
-            
-            else:
-                if evenPrev and evenPrev <= curr.val or curr.val % 2 != 0:
-                    return False
-                
-                oddPrev = None
-                evenPrev = curr.val
-            
-            if curr.left: q.append([curr.left, level+1])
-            if curr.right: q.append([curr.right, level+1])
+            if cur.right:
+                q.append((cur.right, level+1))
         
+        levels = list(levels.values())
+        for i in range(len(levels)):
+            level = levels[i]
+            print(level)
+
+            # even level
+            if i%2 == 0:
+                if level[0]%2 == 0: return False
+                for j in range(1, len(level)):
+                    if level[j] <= level[j-1] or level[j]%2 == 0:
+                        return False
+            
+            # odd level
+            else:
+                if level[0]%2 == 1: return False
+                for j in range(1, len(level)):
+                    if level[j] >= level[j-1] or level[j]%2 == 1:
+                        return False
+                    
+
         return True
+        
