@@ -4,68 +4,62 @@
 #         self.val = val
 #         self.next = next
 class Solution:
-    
-    def buildList(self, stack):
-        if not stack: return
+    def reverseKGroup(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
         
-        newNode = ListNode(stack.pop())
-        newNode.next = self.buildList(stack)
+        # 1 -> 2 -> 3 -> 4 -> 5 -> 6
         
-        return newNode
-    
-    def reverse(self, head):
-        if not head: return
-        temp = head
-        # None <- 1 <- 2 <- 3 <- 4 -> None
-        prev = None
-        while temp:
-            tempNext = temp.next
-            temp.next = prev
-            prev = temp
+        # 1 -> 2 -> 3 | -> 4 -> 5 -> 6 |  -> 7 -> 8
+        # k = 3
+
+        # 2 -> 1
+
+        # newHead, newTail, nextGroupPointer = reverseKNodes(head)
+        # newTail.next = joinNodeGroup(nextGroupPointer)
+
+        # 1
+
+        # 2 -> 1 -> 4 -> 3 -> 6 -> 5
+
+        # k = 2
+
+        # N <- 1 <- 2 -> 3 -> 4 -> N
+        # p c    n
+
+        def reverseKNodes(head, k):
+            if not head: return 
+
+            temp = head
+            nodeCount = 0
+            while temp.next:
+                temp = temp.next
+                nodeCount += 1
             
-            temp = tempNext
-        
-        return prev
-    
-    def mergeLists(self, array, k):
-        if not array: return 
-        
-        stack = array.popleft()
-        
-        if len(stack) < k:
-            return self.reverse(self.buildList(stack))
-        
-        # 3 -> 2 -> 1 -> None
-        head = self.buildList(stack)
-        temp = head
-        while temp.next:
-            temp = temp.next
-        
-        #temp is now last node 3->2->[1]
-        temp.next = self.mergeLists(array, k)
-        
-        return head
-    
-    def reverseKGroup(self, head: ListNode, k: int) -> ListNode:
-        arr = deque([])
-        
-        temp = head
-        stack = []
-        count = 1
-        while temp:
-            stack.append(temp.val)
+            if nodeCount+1 < k:
+                return (head, temp, None)
+
+            cur = head
+            prev = None
+            while k > 0 and cur:
+                curNext = cur.next
+                cur.next = prev
+                prev = cur
+                cur = curNext
+                k -= 1
             
-            if count == k:
-                arr.append(stack)
-                count = 0
-                stack = []
-            
-            
-            count+=1
-            temp = temp.next
+            # prev: newHead
+            # head: newTail
+
+            return (prev, head, cur)
         
-        if stack: 
-            arr.append(stack)
+        def joinNodeGroup(head, k):
+            if not head: return
+            
+            newHead, newTail, nextGroupPointer = reverseKNodes(head, k)
+            newTail.next = joinNodeGroup(nextGroupPointer, k)
+
+            return newHead
         
-        res = self.mergeLists(arr, k)
-        return res
+        return joinNodeGroup(head, k)
+
+
+
