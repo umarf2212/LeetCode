@@ -3,24 +3,43 @@ class Solution:
         """
         Do not return anything, modify nums in-place instead.
         """
-        
-        n = len(nums)-1
-        
-        k = k % len(nums)
-        
-        temp = []
-        i = 0
-        for i in range(len(nums)-1, n-k,-1):
-            temp.append(nums[i])
-        
-        i-=1
-        j = n
-        while i >= 0:
-            nums[j]  = nums[i]
-            i-=1
-            j-=1
+        # k = 3
 
-        for i in range(k):
-            nums[i] = temp.pop()
-            
+        # 1 2 3 4 5 6 7 => 5 6 7 1 2 3 4
+        # 7 6 5 | 4 3 2 1
+        # 5 6 7 | 1 2 3 4
+
+        # k = 0
+        # 1 2 3 4 5
+        # 5 4 3 2 1
+        # arr[:0], ar[0:]
+
+        # k = 7 % n
+        # 1 2 3 4 5
+        # 4 5 1 2 3
+
+        n = len(nums)
+        k = k % n
+
+
+        # 1 2 | 3 4 5 6 | 7 8
+
+        def reverseSubarray(ar, i, j):
+            while i < j:
+                ar[i], ar[j] = ar[j], ar[i]
+                i += 1
+                j -= 1
+        
+        # 1. Reverse the whole array
+        reverseSubarray(nums, 0, n-1)
+
+        # 2. Reverse first K elements
+        reverseSubarray(nums, 0, k-1)
+
+        # 3. Reverse last n-k elements
+        reverseSubarray(nums, k, n-1)
+
+
+
+
 
