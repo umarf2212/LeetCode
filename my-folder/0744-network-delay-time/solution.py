@@ -1,38 +1,46 @@
-import heapq
 from collections import defaultdict
+from heapq import heappop, heappush
 class Solution:
     def networkDelayTime(self, times: List[List[int]], n: int, k: int) -> int:
 
-        inf = float('inf')
+        # 1. Build Graph
+        # 2. Use Dijkstra's algo to find shortest path from 
+        #    given node to all other nodes.
+        # 3. Minimum time to reach all nodes is the time 
+        #    it takes for the furthest node to receive the signal.
+        # 4. Graph can be disconnected in which case disconnected nodes
+        #    may never receive the signal, so return -1 if such node exists.
+        
 
         graph = defaultdict(list)
         wt = {}
-        for u,v,w in times:
+        for u, v, w in times:
             graph[u].append(v)
             wt[u, v] = w
         
+        inf = float('inf')
+
+        heap = [(0, k)]
         distances = [inf] * (n+1)
+        distances[k] = 0
+        while heap:
+            curDist, v = heappop(heap)
 
-        hq = []
-        heapq.heappush(hq, (0, k))
+            for u in graph[v]:
+                newDist = distances[v] + wt[v, u]
 
-        while hq:
-            dist, v = heapq.heappop(hq)
+                if newDist < distances[u]:
+                    distances[u] = newDist
+                    heappush(heap, (newDist, u) )
 
-            if distances[v] == inf:
-                distances[v] = dist
-
-                for u in graph[v]:
-                    if distances[u] == inf:
-                        heapq.heappush(hq, (dist+wt[v, u], u))
+        maxDist = 0
+        for i in range(1, n+1):
+            if distances[i] == inf:
+                return -1
+            else:
+                maxDist = max(maxDist, distances[i])
         
-        # print(distances)
+        return maxDist
 
-        ans = -1
-        for dist in distances[1:]:
-            ans = max(ans, dist)
-        
-        if ans == inf: 
-            return -1
-        
-        return ans
+
+
