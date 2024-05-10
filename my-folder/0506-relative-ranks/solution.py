@@ -1,22 +1,30 @@
 class Solution:
     def findRelativeRanks(self, score: List[int]) -> List[str]:
         
-        heap = [-i for i in score]
+        scores = [(i, score[i]) for i in range(len(score))]
+        scores.sort(key = lambda x:x[1], reverse=True)
+
+        ranks = {}
+        for j in range(len(scores)):
+            rank = j+1
+
+            if rank == 1:
+                rank = 'Gold Medal'
+            elif rank == 2:
+                rank = 'Silver Medal'
+            elif rank == 3:
+                rank = 'Bronze Medal'
+            
+            ranks[ scores[j][0] ] = str(rank)
         
-        heapq.heapify(heap)
+        res = []
+        for i in range(len(score)):
+            res.append(ranks[i])
         
-        d = {}
-        
-        d[heapq.heappop(heap)] = 'Gold Medal'
-        if heap: d[heapq.heappop(heap)] = 'Silver Medal'
-        if heap: d[heapq.heappop(heap)] = 'Bronze Medal'
-        
-        position = 4
-        while heap:
-            d[heapq.heappop(heap)] = str(position)
-            position += 1
-        
-        return [d[-i] for i in score]
+        return res
+
+
+
 
 
         
