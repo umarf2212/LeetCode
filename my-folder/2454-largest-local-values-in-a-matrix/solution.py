@@ -1,25 +1,27 @@
 class Solution:
     def largestLocal(self, grid: List[List[int]]) -> List[List[int]]:
         
-        def checkLargest(mat, i, j):
+        def calculateLargest(i, j, grid):
             Max = float('-inf')
-            Max = max(Max, mat[i][j])
-            Max = max(Max, mat[i-1][j-1])
-            Max = max(Max, mat[i-1][j])
-            Max = max(Max, mat[i][j-1])
-            Max = max(Max, mat[i+1][j+1])
-            Max = max(Max, mat[i+1][j])
-            Max = max(Max, mat[i][j+1])
-            Max = max(Max, mat[i-1][j+1])
-            Max = max(Max, mat[i+1][j-1])
+            Max = max(Max, grid[i][j])
+            Max = max(Max, grid[i-1][j-1])
+            Max = max(Max, grid[i-1][j+1])
+            Max = max(Max, grid[i+1][j-1])
+            Max = max(Max, grid[i+1][j+1])
+            Max = max(Max, grid[i+1][j])
+            Max = max(Max, grid[i-1][j])
+            Max = max(Max, grid[i][j+1])
+            Max = max(Max, grid[i][j-1])
             return Max
         
         n = len(grid)
-        res = [[0 for _ in range(n-2)] for _ in range(n-2)]
+
+        result = []
         for i in range(1, n-1):
+            row = []
             for j in range(1, n-1):
-                res[i-1][j-1] = checkLargest(grid, i, j)
-
-        return res
-
+                row.append( calculateLargest(i, j, grid) )
+            result.append(row)
+        
+        return result
 
