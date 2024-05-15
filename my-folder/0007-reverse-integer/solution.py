@@ -1,13 +1,23 @@
 class Solution:
     def reverse(self, x: int) -> int:
-        if x < 0:
-            n = True
-            rev = int(str(abs(x))[::-1])
-        else:
-            n = False
-            rev = int(str(x)[::-1])
+
+        # 321
         
-        if rev > 2147483647 or rev < -2147483647:
+        MIN = -2**31
+        MAX = 2**31-1
+        
+        sign = -1 if x < 0 else 1
+
+        x *= sign
+
+        res = 0
+        while x > 0:
+            res = (res * 10) + (x % 10)
+            x = x//10
+        
+        finalNum = res * sign
+
+        if finalNum < MIN or finalNum > MAX:
             return 0
-        
-        return -(rev) if n else rev
+
+        return finalNum
