@@ -6,16 +6,29 @@
 #         self.right = right
 class Solution:
     def evaluateTree(self, root: Optional[TreeNode]) -> bool:
+        if not root: return False
+        
+        # 1. Do postorder traversal
+        # 2. Return the result of left subtree and right subtree
+        #    and evaluate current cell, and return to its parent
 
         def traverse(root):
             if not root: return
-
-            if root.val == 1 or root.val == 0: 
-                return root.val
-
+            
+            # if leaf node
+            if not root.left and not root.right:
+                return True if root.val == 1 else False
+            
             left = traverse(root.left)
             right = traverse(root.right)
 
-            return left or right if root.val == 2 else left and right
+            if root.val == 2:
+                curRes = left or right
+            else:
+                curRes = left and right
+            
+            return curRes
         
-        return True if traverse(root) == 1 else False
+        return traverse(root)
+            
+
