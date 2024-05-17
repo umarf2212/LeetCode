@@ -7,20 +7,23 @@
 class Solution:
     def removeLeafNodes(self, root: Optional[TreeNode], target: int) -> Optional[TreeNode]:
         
-        def traverse(root):
-            if not root: return None
+        def deleteLeaf(root, target, isLeafRemoved):
+            if not root: return
+
+            if not root.left and not root.right:
+                if root.val == target:
+                    isLeafRemoved[0] = True
+                    return
             
-            if not root.left and not root.right and root.val == target:
-                return None
+            root.left = deleteLeaf(root.left, target, isLeafRemoved)
+            root.right = deleteLeaf(root.right, target, isLeafRemoved)
+
+            return root
         
-            root.left = traverse(root.left)
-            root.right = traverse(root.right)
-                
-            if not root.left and not root.right and root.val == target:
-                return None
-            else:
-                return root
-    
-        root = traverse(root)
+        while True:
+            isLeafRemoved = [False]
+            root = deleteLeaf(root, target, isLeafRemoved)
+            if not isLeafRemoved[0]:
+                break
+        
         return root
-            
