@@ -39,6 +39,8 @@ class Solution:
             # the elements of left half are smaller than 
             # that of right half
 
+            # 1 1 2 6 7 8 | 1 2 3 4 9 10
+
             i = 0
             j = 0
             while j < len(right):
@@ -47,7 +49,6 @@ class Solution:
                 
                 count[0] += len(left) - i
                 j += 1
-
 
             return merge(left, right)
         
