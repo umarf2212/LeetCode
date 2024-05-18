@@ -7,18 +7,19 @@
 class Solution:
     def distributeCoins(self, root: Optional[TreeNode]) -> int:
         
-        def traverse(root):
-            nonlocal moves
+        def traverse(root, moves):
             if not root: return 0
 
-            left = traverse(root.left)
-            right = traverse(root.right)
+            left = traverse(root.left, moves)
+            right = traverse(root.right, moves)
 
-            excess = root.val - 1
-            moves += abs(left) + abs(right)
+            moves[0] += abs(left) + abs(right)
 
-            return left + right + excess
+            return (root.val - 1) + left + right
+        
+        moves = [0]
+        traverse(root, moves)
+        return moves[0]
 
-        moves = 0
-        traverse(root)
-        return moves
+
+            
