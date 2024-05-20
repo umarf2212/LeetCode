@@ -1,15 +1,18 @@
 class Solution:
     def subsetXORSum(self, nums: List[int]) -> int:
+        if not nums:
+            return 0
+
         
-        def getXOR(ar):
-            res = 0
-            for i in ar: res ^= i
-            return res
+        def calcXOR(nums, i, cur, ans):
+            if i == len(nums):
+                ans.append(cur)
+                return
+            
+            calcXOR(nums, i+1, cur ^ nums[i], ans)
+            calcXOR(nums, i+1, cur, ans)
         
-        ans = 0
-        for r in range(1, len(nums)+1):
-            for com in combinations(nums, r):
-                ans += getXOR(com)
-        
-        return ans
-        
+        ans = []
+        calcXOR(nums, 0, 0, ans)
+        return sum(ans)
+
