@@ -1,13 +1,14 @@
 class Solution:
     def minAreaRect(self, points: List[List[int]]) -> int:
-
-        # points.sort(key=lambda x:x[0])
         
         n = len(points)
+
         pointsSet = set([tuple(point) for point in points])
 
-        def checkRectangle(x1, y1, x2, y2):
-            return x1 < x2 and y1 < y2 and (x1, y2) in pointsSet and (x2, y1) in pointsSet
+        def checkRectangle(x1, y1, x2, y2, pointsSet):
+            if x2 > x1 and y2 > y1 and (x2, y1) in pointsSet and (x1, y2) in pointsSet:
+                return True
+            return False
 
         ans = float('inf')
         for i in range(n):
@@ -15,9 +16,8 @@ class Solution:
                 x1, y1 = points[i]
                 x2, y2 = points[j]
 
-                if checkRectangle(x1, y1, x2, y2):
-                    area = (x2 - x1) * (y2 - y1)
-                    ans = min(ans, area)
-        
-        return ans if ans != float('inf') else 0
+                if checkRectangle(x1, y1, x2, y2, pointsSet):
+                    area = (x2-x1) * (y2-y1)
+                    ans = min(area, ans)
 
+        return ans if ans != float('inf') else 0
