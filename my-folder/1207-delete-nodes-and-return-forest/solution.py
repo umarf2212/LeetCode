@@ -7,60 +7,33 @@
 class Solution:
     def delNodes(self, root: Optional[TreeNode], to_delete: List[int]) -> List[TreeNode]:
 
-        # 1. To delete current root
-        # -> remove reference from parent
-        # 2. Not to delete current root
-        # 3. Traverse hashset, do DFS on each node
+        # 1. Parent will remove the node of the children if either of them is in to_delete
         
-        def traverse(root, parent):
-            if not root: return
-
-            # delete current root
+        def dfs(root, to_delete, result):
+            if not root: 
+                return
+            
             if root.val in to_delete:
-
-                # remove reference
-                if parent.left == root:
-                    parent.left = None
-                else:
-                    parent.right = None
-
+                if root.left:
+                    result.add(root.left)
+                if root.right:
+                    result.add(root.right)
             
-            else:
-                roots.add(root)
-
-            traverse(root.left, root)
-            traverse(root.right, root)
-
-        roots = set()
-        if root.val not in to_delete:
-            roots.add(root)
-        
-        traverse(root.left, root)
-        traverse(root.right, root)
-
-        def removeNodes(root):
-            if not root: return
-
-            nodesToRemove.add(root)
+            dfs(root.left, to_delete, result)
+            dfs(root.right, to_delete, result)
             
-            removeNodes(root.left)
-            removeNodes(root.right)
-
-        nodesToRemove = set()
-        for root in roots:
-            if root.left:
-                removeNodes(root.left)
+            if root.left and root.left.val in to_delete:
+                root.left = None
             
-            if root.right:
-                removeNodes(root.right)
-        
-        for nodes in nodesToRemove:
-            roots.remove(nodes)
-        
-        return list(roots)
+            if root.right and root.right.val in to_delete:
+                root.right = None
             
+        result = set()
+        result.add(root)
+        to_delete = set(to_delete)
+        dfs(root, to_delete, result)
 
-                
-
-
+        finalResult = [node for node in result if node.val not in to_delete]
+        return finalResult
+            
 
