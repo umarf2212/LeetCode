@@ -1,21 +1,15 @@
 class Solution:
-    def commonChars(self, A: List[str]) -> List[str]:
+    def commonChars(self, words: List[str]) -> List[str]:
         
-        d = {}
-        lenA = len(A)
-        for word in range(lenA):
-            for char in range(len(A[word])):
-                if A[word][char] not in d:
-                    d[A[word][char]] = [0] * lenA
-                    d[A[word][char]][word] = 1
+        N = len(words)
 
-                else:
-                    d[A[word][char]][word] += 1
+        result = []
+        for letter in set(words[0]):
+            letterCount = min([word.count(letter) for word in words])
+            result += letterCount * [letter]
+
+        return result
+
+
         
-
-        res = []
-        for key, val in d.items():
-            if all(val):
-                res += [key] * min(val)
-                
-        return res
+            
