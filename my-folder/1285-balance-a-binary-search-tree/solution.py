@@ -5,27 +5,34 @@
 #         self.left = left
 #         self.right = right
 class Solution:
-    def balanceBST(self, root: TreeNode) -> TreeNode:        
-        def inorder(root, arr):
-            if not root: return
+    def balanceBST(self, root: TreeNode) -> TreeNode:
+
+        def inorder(node, treeArray):
+            if not node:
+                return
             
-            inorder(root.left, arr)
-            arr.append(root.val)
-            inorder(root.right, arr)
+            inorder(node.left, treeArray)
+            treeArray.append(node.val)
+            inorder(node.right, treeArray)
         
-        def build(arr, i, j):
-            if i>j: return None
+        treeArray = []
+        inorder(root, treeArray)
+
+        def recreateBST(left, right, currArray):
+            if left > right:
+                return None
             
-            mid = (j+i)//2
-            newNode = TreeNode(arr[mid])
-            newNode.left = build(arr, i, mid-1)
-            newNode.right = build(arr, mid+1, j)
+            if left == right:
+                return TreeNode(currArray[left])
             
-            return newNode
+            mid = (left + right)//2
+
+            curr = TreeNode(currArray[mid])
+
+            curr.left = recreateBST(left, mid-1, currArray)
+            curr.right = recreateBST(mid+1, right, currArray)
+
+            return curr
         
-        
-        arr = []
-        inorder(root, arr)
-        
-        return build(arr, 0, len(arr)-1)       
-            
+        return recreateBST(0, len(treeArray)-1, treeArray)
+
