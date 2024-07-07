@@ -1,12 +1,12 @@
 class Solution:
     def numWaterBottles(self, numBottles: int, numExchange: int) -> int:
         
-        total = numBottles
-
+        ans = numBottles
         while numBottles >= numExchange:
             remaining = numBottles % numExchange
             numBottles = numBottles // numExchange
-            total += numBottles
+            ans += numBottles
             numBottles += remaining
+        
+        return ans
 
-        return total
