@@ -1,21 +1,13 @@
 class Solution:
     def minOperations(self, logs: List[str]) -> int:
         
-        stack = []
-        
+        folder = 0
+
         for log in logs:
+            if log == '../':
+                folder = max(0, folder-1)
             
-            if log == './':
-                continue
-            
-            elif log == '../':
-                if not stack:
-                    continue
-                else:
-                    stack.pop()
-            
-            else:
-                stack.append(log)
-        
-        
-        return len(stack)
+            elif log != './':
+                folder += 1
+
+        return folder
