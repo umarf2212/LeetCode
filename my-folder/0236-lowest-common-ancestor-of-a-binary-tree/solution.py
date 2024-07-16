@@ -6,24 +6,26 @@
 #         self.right = None
 
 class Solution:
-    
-    def find(self, root, p, q):
-        if not root: return
-        
-        if root.val == p.val or root.val == q.val:
-            return root
-        
-        left = self.find(root.left, p, q)
-        right = self.find(root.right, p, q)
-        
-        if left and right:
-            return root
-        elif not left and not right:
-            return None
-        elif left or right:
-            return left if left else right
-
-
-    
     def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
-        return self.find(root, p, q)
+        
+        def traverse(node, p, q, lca):
+            if not node: 
+                return False
+            
+            left = traverse(node.left, p, q, lca)
+            right = traverse(node.right, p, q, lca)
+
+            if left and right:
+                lca[0] = node
+            
+            if node.val == p.val or node.val == q.val:
+                if left or right:
+                    lca[0] = node
+                else:
+                    return True
+
+            return left or right
+        
+        lca = [None]
+        traverse(root, p, q, lca)
+        return lca[0]
