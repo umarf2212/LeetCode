@@ -6,34 +6,36 @@
 #         self.right = right
 class Solution:
     def delNodes(self, root: Optional[TreeNode], to_delete: List[int]) -> List[TreeNode]:
-
-        # 1. Parent will remove the node of the children if either of them is in to_delete
         
-        def dfs(root, to_delete, result):
-            if not root: 
+        def deleteNodes(node, to_delete, remaining):
+            if not node: 
                 return
             
-            if root.val in to_delete:
-                if root.left:
-                    result.add(root.left)
-                if root.right:
-                    result.add(root.right)
+            if node.val in to_delete:
+                if node.left:
+                    remaining.append(node.left)
+                
+                if node.right:
+                    remaining.append(node.right)
             
-            dfs(root.left, to_delete, result)
-            dfs(root.right, to_delete, result)
-            
-            if root.left and root.left.val in to_delete:
-                root.left = None
-            
-            if root.right and root.right.val in to_delete:
-                root.right = None
-            
-        result = set()
-        result.add(root)
-        to_delete = set(to_delete)
-        dfs(root, to_delete, result)
+            deleteNodes(node.left, to_delete, remaining)
+            deleteNodes(node.right, to_delete, remaining)
 
-        finalResult = [node for node in result if node.val not in to_delete]
-        return finalResult
+            if node.left and node.left.val in to_delete:
+                node.left = None
             
+            if node.right and node.right.val in to_delete:
+                node.right = None
+            
+        
+        to_delete = set(to_delete)
+        remaining = [root]
+
+        deleteNodes(root, to_delete, remaining)
+
+        result = [node for node in remaining if node.val not in to_delete]
+        
+        return result
+
+
 
