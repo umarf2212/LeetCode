@@ -1,23 +1,18 @@
 /**
  * @param {Function} fn
+ * @return {Function}
  */
 function memoize(fn) {
-    /**
-        This cache variable is stored in the memory because
-        it is being used inside the returned function and 
-        a closure is being formed.
-     */
-    let cache = {}
+    const cache = {}
+
     return function(...args) {
-        if (cache[args] === undefined) {
-            // ...args above creates an array args so we need to
-            // spread it again below in the fn call.
-            let res = fn(...args)
-            cache[args] = res
-            return res
-        } else {
-            return cache[args]
+        let argsStr = JSON.stringify(args)
+        if (cache[argsStr] === undefined) {
+            let result = fn.apply(this, args)
+            cache[argsStr] = result
+            return result
         }
+        return cache[argsStr]
     }
 }
 
