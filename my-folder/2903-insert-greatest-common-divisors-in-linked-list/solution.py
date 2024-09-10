@@ -11,24 +11,19 @@ class Solution:
         def GCD(a, b):
             if b == 0:
                 return a
-            return GCD(b, a%b)
-        
-        # 18 6 10 3
-        
-        # 18 6 10
+            return GCD(b, a % b)
         
         temp = head
         while temp.next:
             tempNext = temp.next
-            
+
             gcd = GCD(temp.val, tempNext.val)
-            
             newNode = ListNode(gcd)
-            
+
             temp.next = newNode
             newNode.next = tempNext
             temp = tempNext
         
         return head
-            
-            
+
+
