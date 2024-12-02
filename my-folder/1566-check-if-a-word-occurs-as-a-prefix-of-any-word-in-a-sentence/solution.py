@@ -1,14 +1,10 @@
 class Solution:
     def isPrefixOfWord(self, sentence: str, searchWord: str) -> int:
         
-        res = -1
-        ind = 1
-        for word in sentence.split(' '):
-            
-            f = word.find(searchWord)
-            if f == 0 and res == -1:
-                res = ind
-            
-            ind += 1
-        
-        return res
+        n = len(searchWord)
+        for ind, word in enumerate(sentence.split(' ')):
+            if len(word) >= n:
+                if word[:n] == searchWord:
+                    return ind+1
+
+        return -1
