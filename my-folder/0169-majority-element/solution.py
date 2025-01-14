@@ -1,12 +1,17 @@
 class Solution:
     def majorityElement(self, nums: List[int]) -> int:
         
-        d = {}
-        for i in range(len(nums)):
-            if nums[i] in d:
-                d[nums[i]] += 1
+        curElement = nums[0]
+        count = 0
+
+        for num in nums:
+            if num == curElement:
+                count += 1
             else:
-                d[nums[i]] = 1
+                count -= 1
+
+            if count == 0:
+                curElement = num
+                count = 1
         
-        for num, count in d.items():
-            if count >= len(nums)/2: return num
+        return curElement
